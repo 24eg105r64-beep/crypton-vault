@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Vaults - Crypton</title>
+  <link rel="stylesheet" th:href="@{/css/crypton.css}">
+</head>
+<body>
+  <nav>
+    <a class="brand" th:href="@{/dashboard}">Crypton</a>
+    <a th:href="@{/dashboard}">Dashboard</a>
+    <a th:href="@{/vaults}">My vaults</a>
+    <form th:action="@{/logout}" method="post"><button type="submit">Sign out</button></form>
+  </nav>
+
+  <section class="hero split">
+    <div>
+      <span class="eyebrow">Your collection</span>
+      <h1>Vaults.</h1>
+    </div>
+    <div>
+      <p class="lead">Group your assets the way you think about them: savings, long-term, everyday.</p>
+      <form th:action="@{/vaults}" method="post" style="margin-top:2rem">
+        <label for="vaultName">Name a new vault</label>
+        <input type="text" id="vaultName" name="vaultName" placeholder="e.g. Long-term savings" required>
+        <button type="submit">Create</button>
+      </form>
+    </div>
+  </section>
+
+  <p th:if="${success}" th:text="${success}" style="color: green;"></p>
+  <p th:if="${error}" th:text="${error}" style="color: red;"></p>
+
+  <h2 th:text="${#lists.size(vaults)} + (${#lists.size(vaults)} == 1 ? ' vault' : ' vaults')">Vaults</h2>
+  <p th:if="${#lists.isEmpty(vaults)}" class="lead">No vaults yet. Name your first one above. It only takes a moment.</p>
+  <ul class="vault-list">
+    <li th:each="vault : ${vaults}">
+      <a th:href="@{/vaults/{id}(id=${vault.vaultId})}" th:text="${vault.vaultName}">Vault</a>
+      <small th:text="'Since ' + ${#temporals.format(vault.createdAt, 'MMM yyyy')} + '  →'">date</small>
+    </li>
+  </ul>
+</body>
+</html>

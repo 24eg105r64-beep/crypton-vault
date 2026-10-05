@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Crypton</title>
+  <link rel="stylesheet" th:href="@{/css/crypton.css}">
+</head>
+<body>
+  <nav>
+    <a class="brand" th:href="@{/dashboard}">Crypton</a>
+    <a th:href="@{/dashboard}">Dashboard</a>
+    <a th:href="@{/vaults}">My vaults</a>
+    <form th:action="@{/logout}" method="post"><button type="submit">Sign out</button></form>
+  </nav>
+
+  <section class="hero split">
+    <div>
+      <span class="eyebrow" th:text="'Welcome, ' + ${user.name}">Welcome</span>
+      <h1>Your digital<br>vault.</h1>
+    </div>
+    <div>
+      <p class="lead">Everything you hold, kept quietly and securely, protected on your device before it ever reaches the network.</p>
+      <p style="margin-top:2rem"><a class="btn" th:href="@{/vaults}">Open my vaults</a></p>
+    </div>
+  </section>
+
+  <h2>Holdings</h2>
+  <p th:if="${#maps.isEmpty(totals)}">Nothing here yet. <a th:href="@{/vaults}">Create a vault</a> and add your first coin.</p>
+  <div class="coins" th:unless="${#maps.isEmpty(totals)}">
+    <div class="coin" th:each="entry : ${totals}">
+      <span class="icon-badge"><span th:text="${entry.key.name() == 'BTC' ? '₿' : (entry.key.name() == 'ETH' ? 'Ξ' : (entry.key.name() == 'SOL' ? '◎' : '₮'))}">₿</span></span>
+      <span class="name" th:text="${entry.key}">BTC</span>
+      <span class="amount" th:text="${entry.value.stripTrailingZeros().toPlainString()}">0</span>
+    </div>
+  </div>
+
+  <h2>Vaults</h2>
+  <section class="split">
+    <div>
+      <span class="figure" th:text="${#lists.size(vaults)}">0</span>
+      <span class="eyebrow" th:text="${#lists.size(vaults) == 1 ? 'Vault secured' : 'Vaults secured'}">Vaults</span>
+    </div>
+    <div>
+      <ul class="vault-list">
+        <li th:each="vault : ${vaults}">
+          <a th:href="@{/vaults/{id}(id=${vault.vaultId})}" th:text="${vault.vaultName}">Vault</a>
+          <small th:text="${#temporals.format(vault.createdAt, 'MMM yyyy')}">date</small>
+        </li>
+      </ul>
+      <p style="margin-top:1.5rem"><a class="btn-ghost" th:href="@{/vaults}">Create a new vault</a></p>
+    </div>
+  </section>
+
+  <h2>Recent activity</h2>
+  <p th:if="${#lists.isEmpty(recentActivity)}">No activity yet.</p>
+  <ul>
+    <li th:each="log : ${recentActivity}">
+      <span th:text="${#strings.capitalize(#strings.toLowerCase(#strings.replace(log.action, '_', ' ')))}">Login</span>
+      <small style="margin-left:auto" th:text="${#temporals.format(log.timestamp, 'dd MMM, HH:mm')}">date</small>
+    </li>
+  </ul>
+</body>
+</html>

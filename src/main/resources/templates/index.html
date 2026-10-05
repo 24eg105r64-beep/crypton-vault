@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crypton | Your keys. Your rules.</title>
+  <meta name="description" content="A calm, private home for your crypto, protected on your device before anything reaches the network.">
+  <link rel="stylesheet" th:href="@{/css/crypton.css}">
+  <script th:src="@{/js/intro.js}" defer></script>
+</head>
+<body>
+  <nav>
+    <a class="brand" th:href="@{/}">Crypton</a>
+    <a th:href="@{/login}">Sign in</a>
+    <a class="btn" th:href="@{/register}">Get started</a>
+  </nav>
+
+  <section class="collage">
+    <figure class="pic" data-depth="35" style="top:0;left:1%;width:300px;rotate:-4deg"><img th:src="@{/images/billboard.jpg}" alt="You belong here"></figure>
+    <figure class="pic" data-depth="-25" style="top:40px;left:40%;width:190px;rotate:2deg"><img th:src="@{/images/normal.jpg}" alt="Your normal day is someone's dream"></figure>
+    <figure class="pic" data-depth="50" style="top:70px;right:3%;width:230px;rotate:5deg"><img th:src="@{/images/star.jpg}" alt="Work until you don't have to introduce yourself"></figure>
+    <p class="phrase" data-depth="20" style="top:330px;right:6%">“HODL, but make it calm.”</p>
+
+    <div class="center" data-depth="-10">
+      <h1>Your keys.<br>Your rules.</h1>
+      <p class="lead">A calm, private home for your crypto.</p>
+      <p style="margin-top:2rem"><a class="btn" href="#start">Take a look ↓</a></p>
+    </div>
+
+    <p class="phrase" data-depth="-20" style="top:720px;left:30%">“Less panic. More patience.”</p>
+    <figure class="pic" data-depth="-45" style="top:690px;left:0;width:240px;rotate:3deg"><img th:src="@{/images/pink.jpg}" alt="Busy being that girl"></figure>
+    <figure class="pic" data-depth="30" style="top:820px;left:44%;width:220px;rotate:-2deg"><img th:src="@{/images/dream.jpg}" alt="Follow that dream"></figure>
+    <figure class="pic" data-depth="-35" style="top:700px;right:2%;width:200px;rotate:-3deg"><img th:src="@{/images/building.jpg}" alt="To make it, you have to believe you can"></figure>
+    <p class="phrase" data-depth="15" style="top:1130px;left:4%">“Locked tighter than your group chat.”</p>
+    <p class="phrase" data-depth="-15" style="top:1150px;right:5%">“Sleep well. Your coins are fine.”</p>
+  </section>
+
+  <section class="doodles">
+    <div class="doodle" data-depth="20" style="rotate:-3deg"><svg viewBox="0 0 72 72"><circle class="blob" cx="40" cy="38" r="22"/><circle cx="22" cy="32" r="10"/><path d="M32 32h26M50 32v8M56 32v6"/></svg><p>Yours. Not ours.</p></div>
+    <div class="doodle" data-depth="-25" style="rotate:2deg"><svg viewBox="0 0 72 72"><circle class="blob" cx="32" cy="42" r="22"/><rect x="18" y="30" width="36" height="28" rx="6"/><path d="M26 30v-8a10 10 0 0 1 20 0v8"/><circle cx="36" cy="44" r="3"/></svg><p>Locked by default.</p></div>
+    <div class="doodle" data-depth="15" style="rotate:-2deg"><svg viewBox="0 0 72 72"><circle class="blob" cx="42" cy="40" r="22"/><ellipse cx="36" cy="22" rx="16" ry="6"/><path d="M20 22v8c0 3.3 7.2 6 16 6s16-2.7 16-6v-8M20 30v8c0 3.3 7.2 6 16 6s16-2.7 16-6v-8M20 38v8c0 3.3 7.2 6 16 6s16-2.7 16-6v-8"/></svg><p>Stack quietly.</p></div>
+    <div class="doodle" data-depth="-20" style="rotate:3deg"><svg viewBox="0 0 72 72"><circle class="blob" cx="30" cy="40" r="22"/><path d="M44 16a18 18 0 1 0 12 30A16 16 0 0 1 44 16z"/><path d="M58 14v6M55 17h6M62 30v4M60 32h4"/></svg><p>Sleep well tonight.</p></div>
+    <div class="doodle" data-depth="25" style="rotate:-2deg"><svg viewBox="0 0 72 72"><circle class="blob" cx="38" cy="36" r="22"/><path d="M36 58V34M26 58h20"/><path d="M36 38c0-8 6-14 16-14 0 9-6 14-16 14z"/><path d="M36 44c0-7-5-12-13-12 0 8 5 12 13 12z"/></svg><p>Patience is a strategy.</p></div>
+    <div class="doodle" data-depth="-15" style="rotate:2deg"><svg viewBox="0 0 72 72"><circle class="blob" cx="34" cy="40" r="22"/><path d="M18 40c1-12 8-20 18-20s17 8 18 20M24 44c0-8 5-14 12-14s12 6 12 14M29 52c-1-2-1-5-1-8 0-5 3-9 8-9s8 4 8 9v6M36 44v10"/></svg><p>Only you get in.</p></div>
+  </section>
+
+  <section class="hero split" id="start" style="margin-top:clamp(5rem,12vw,10rem)">
+    <div>
+      <span class="eyebrow">Private digital vault</span>
+      <h1>Your digital<br>vault.</h1>
+    </div>
+    <div>
+      <p class="lead">Every key is created and protected on your own device, before anything reaches the network.</p>
+      <p style="margin-top:2rem"><a class="btn" th:href="@{/register}">Open your vault</a></p>
+    </div>
+  </section>
+
+  <h2>Built on quiet principles</h2>
+  <section class="principles">
+    <div>
+      <span class="icon-badge"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z"/></svg></span>
+      <span class="num">01</span><h3>Protected on your device</h3>
+      <p><small>Your fingerprint or PIN unlocks the vault locally. Nothing sensitive leaves in the clear.</small></p>
+    </div>
+    <div>
+      <span class="icon-badge"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>
+      <span class="num">02</span><h3>Encrypted at rest</h3>
+      <p><small>Every balance and record is stored encrypted, so it stays private even behind the scenes.</small></p>
+    </div>
+    <div>
+      <span class="icon-badge"><svg viewBox="0 0 24 24"><path d="M7 4h10v16H7z"/><path d="M10 8h4M10 12h4M10 16h2"/></svg></span>
+      <span class="num">03</span><h3>Every action recorded</h3>
+      <p><small>A private audit trail only you can see, so you always know what happened, and when.</small></p>
+    </div>
+  </section>
+
+  <h2>Begin</h2>
+  <section>
+    <p class="display">Quietly<br>secure.</p>
+    <a class="btn" th:href="@{/register}">Create your vault</a>
+    <a th:href="@{/login}" style="margin-left:1.5rem">I already have one</a>
+  </section>
+
+  <footer>
+    <span>Crypton</span>
+    <span>Your crypto, vaulted on your own terms</span>
+  </footer>
+</body>
+</html>

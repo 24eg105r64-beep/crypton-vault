@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="${vault.vaultName} + ' - Crypton'">Vault - Crypton</title>
+  <link rel="stylesheet" th:href="@{/css/crypton.css}">
+</head>
+<body>
+  <nav>
+    <a class="brand" th:href="@{/dashboard}">Crypton</a>
+    <a th:href="@{/dashboard}">Dashboard</a>
+    <a th:href="@{/vaults}">My vaults</a>
+    <form th:action="@{/logout}" method="post"><button type="submit">Sign out</button></form>
+  </nav>
+
+  <section class="hero split">
+    <div>
+      <span class="eyebrow"><a th:href="@{/vaults}" style="border:none;color:inherit">← All vaults</a></span>
+      <h1 th:text="${vault.vaultName} + '.'">Vault.</h1>
+    </div>
+    <div>
+      <p class="lead">Add a coin to this vault. Each one gets its own secure wallet address.</p>
+      <form th:action="@{/vaults/{id}/assets(id=${vault.vaultId})}" method="post" style="margin-top:2rem">
+        <label for="coinType">Choose a coin</label>
+        <select id="coinType" name="coinType">
+          <option th:each="coin : ${coinTypes}" th:value="${coin}" th:text="${coin}">BTC</option>
+        </select>
+        <button type="submit">Add coin</button>
+      </form>
+    </div>
+  </section>
+
+  <p th:if="${success}" th:text="${success}" style="color: green;"></p>
+  <p th:if="${error}" th:text="${error}" style="color: red;"></p>
+
+  <h2>Assets</h2>
+  <p th:if="${#lists.isEmpty(assets)}" class="lead">This vault is empty for now. Add your first coin above.</p>
+  <div class="coin" th:each="asset : ${assets}">
+    <span class="icon-badge"><span th:text="${asset.coinType.name() == 'BTC' ? '₿' : (asset.coinType.name() == 'ETH' ? 'Ξ' : (asset.coinType.name() == 'SOL' ? '◎' : '₮'))}">₿</span></span>
+    <div>
+      <span class="name" th:text="${asset.coinType}">BTC</span><br>
+      <a th:href="@{/assets/{id}(id=${asset.assetId})}" style="font-size:.875rem">Deposit or withdraw →</a>
+    </div>
+    <span class="amount" th:text="${asset.balance.stripTrailingZeros().toPlainString()}">0</span>
+  </div>
+
+  <h2>Vault settings</h2>
+  <form th:action="@{/vaults/{id}/rename(id=${vault.vaultId})}" method="post">
+    <label for="newName">Rename</label>
+    <input type="text" id="newName" name="newName" th:value="${vault.vaultName}" required>
+    <button type="submit">Save</button>
+  </form>
+  <form th:action="@{/vaults/{id}/delete(id=${vault.vaultId})}" method="post" style="margin-top:2rem">
+    <button type="submit">Delete this vault</button>
+  </form>
+</body>
+</html>

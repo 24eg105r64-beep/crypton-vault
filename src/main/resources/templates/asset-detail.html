@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="${asset.coinType} + ' - Crypton'">Coin - Crypton</title>
+  <link rel="stylesheet" th:href="@{/css/crypton.css}">
+</head>
+<body th:with="code=${asset.coinType.name()}">
+  <nav>
+    <a class="brand" th:href="@{/dashboard}">Crypton</a>
+    <a th:href="@{/dashboard}">Dashboard</a>
+    <a th:href="@{/vaults}">My vaults</a>
+    <form th:action="@{/logout}" method="post"><button type="submit">Sign out</button></form>
+  </nav>
+
+  <section class="hero split">
+    <div>
+      <span class="eyebrow">
+        <a th:href="@{/vaults/{id}(id=${asset.vault.vaultId})}" style="border:none;color:inherit"
+           th:text="'← ' + ${asset.vault.vaultName}">← Vault</a>
+      </span>
+      <span class="name" style="display:block;letter-spacing:.16em;text-transform:uppercase;font-size:.75rem;margin-bottom:1rem"
+            th:text="${code == 'BTC' ? 'Bitcoin' : (code == 'ETH' ? 'Ethereum' : (code == 'SOL' ? 'Solana' : 'Tether'))} + ' balance'">Balance</span>
+      <span class="figure">
+        <span th:text="${asset.balance.stripTrailingZeros().toPlainString()}">0</span>
+        <small th:text="${code}">BTC</small>
+      </span>
+      <p style="margin-top:1.5rem"><small>Wallet address</small><br><code th:text="${asset.walletAddress}">0x...</code></p>
+    </div>
+    <div class="panel">
+      <form th:action="@{/assets/{id}/deposit(id=${asset.assetId})}" method="post">
+        <label for="dep">Add funds</label>
+        <input type="text" id="dep" name="amount" placeholder="Amount, e.g. 0.5" inputmode="decimal" required>
+        <button type="submit">Deposit</button>
+      </form>
+      <form th:action="@{/assets/{id}/withdraw(id=${asset.assetId})}" method="post" style="margin-top:2rem">
+        <label for="wd">Move funds out</label>
+        <input type="text" id="wd" name="amount" placeholder="Amount, e.g. 0.1" inputmode="decimal" required>
+        <button type="submit">Withdraw</button>
+      </form>
+    </div>
+  </section>
+
+  <p th:if="${success}" th:text="${success}" style="color: green;"></p>
+  <p th:if="${error}" style="color: red;"
+     th:text="${#strings.contains(error, 'Insufficient')} ? 'There isn’t enough in this wallet for that withdrawal. Try a smaller amount.' : ${error}"></p>
+
+  <h2>History</h2>
+  <p th:if="${#lists.isEmpty(transactions)}" class="lead">No activity yet. Your deposits and withdrawals will appear here.</p>
+  <table th:unless="${#lists.isEmpty(transactions)}">
+    <tr><th>Date</th><th>Activity</th><th>Amount</th><th>Status</th></tr>
+    <tr th:each="txn : ${transactions}">
+      <td th:text="${#temporals.format(txn.timestamp, 'dd MMM yyyy, HH:mm')}">date</td>
+      <td th:text="${txn.type.name() == 'DEPOSIT' ? 'Deposit' : 'Withdrawal'}">Deposit</td>
+      <td th:text="(${txn.type.name() == 'DEPOSIT'} ? '+ ' : '− ') + ${txn.amount.stripTrailingZeros().toPlainString()}">0</td>
+      <td th:text="${txn.status.name() == 'SUCCESS' ? 'Completed' : (txn.status.name() == 'FAILED' ? 'Didn’t go through' : 'Pending')}">Completed</td>
+    </tr>
+  </table>
+</body>
+</html>
