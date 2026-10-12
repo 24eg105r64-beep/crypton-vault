@@ -150,3 +150,65 @@ You can inspect the generated tables at any time:
 ```bash
 mysql -u root -p crypton_db -e "SHOW TABLES; DESCRIBE users; DESCRIBE transactions;"
 ```
+
+---
+
+## ⚛️ React frontend + JSON API
+
+The project now has two separate parts:
+
+```
+crypton/
+├── backend/    Spring Boot + MySQL (Aiven)  → Render "Web Service" (Docker)
+└── frontend/   React (Vite)                 → Render "Static Site"
+```
+
+The original Thymeleaf pages still work. The React app talks to the backend
+through a JSON API under `/api/**`, signed in with a bearer token.
+
+### API endpoints
+
+| Method | Path | What it does |
+| :--- | :--- | :--- |
+| GET | `/api/health` | Public check that the backend is up |
+| POST | `/api/auth/register` | Create an account (same rules as the register page) |
+| POST | `/api/auth/login` | Sign in, returns `{ token, user }` (5 failures = 15 min lock) |
+| GET | `/api/auth/me` | The signed-in user |
+| POST | `/api/auth/logout` | Records the sign-out |
+| GET | `/api/dashboard` | Totals per coin, vaults, recent activity |
+| GET / POST | `/api/vaults` | List / create vaults |
+| GET / PUT / DELETE | `/api/vaults/{id}` | View / rename / delete a vault |
+| POST | `/api/vaults/{id}/assets` | Add a coin to a vault |
+| GET | `/api/assets/{id}` | Coin balance, vault and history |
+| POST | `/api/assets/{id}/deposit` | Deposit `{ "amount": "0.5" }` |
+| POST | `/api/assets/{id}/withdraw` | Withdraw `{ "amount": "0.1" }` |
+
+### Run locally (two terminals)
+
+```bash
+# Terminal 1: backend on http://localhost:8080
+cd backend
+export db_password="your-aiven-password"
+./mvnw spring-boot:run
+
+# Terminal 2: frontend on http://localhost:5173
+cd frontend
+npm install
+npm run dev
+```
+
+### Environment variables
+
+| Where | Name | Value |
+| :--- | :--- | :--- |
+| Render backend | `db_password` | Aiven MySQL password |
+| Render backend | `APP_TOKEN_SECRET` | Long random value that signs sign-in tokens |
+| Render backend | `APP_CORS_ALLOWED_ORIGINS` | The React site's address, e.g. `https://crypton-frontend.onrender.com` |
+| Render static site | `VITE_API_BASE_URL` | The backend's address, e.g. `https://crypton-vault.onrender.com` |
+
+### Known limitations (college project)
+
+- Balances are tracked in the database only; there are no real blockchain transactions or live prices.
+- Wallet addresses are random placeholders.
+- Biometric unlock and client-side encryption are not implemented.
+- Sign-in tokens last 8 hours and cannot be revoked early; signing out removes the token from the browser tab.
